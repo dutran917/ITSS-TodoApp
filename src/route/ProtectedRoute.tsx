@@ -1,7 +1,7 @@
-import React from "react";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { Route } from "react-router-dom";
+import { RootState } from "../redux";
 
 interface ProtectedRouteProps {
     isAuthRoute: boolean;
@@ -15,7 +15,7 @@ const ProtectedRoute = ({
     Component,
     path,
 }: ProtectedRouteProps) => {
-    const isAuth = useSelector((state: RootStateOrAny) => state.auth);
+    const isAuth = useSelector((state: RootState) => state.auth.auth);
     return (
         <Route
             path={path}

@@ -1,4 +1,4 @@
-import { deleteTask, updateTask } from "../../actions/task";
+import { updateTask, deleteTask } from "../../redux/taskSlice";
 import { Alert, Form, Input, Modal, Select, Button } from "antd";
 import axiosInstance from "../../interceptors/axiosInstance";
 import React, { useEffect, useState } from "react";
@@ -57,11 +57,10 @@ const DisplayTask = ({
     };
 
     const handleDelete = () => {
-        axiosInstance
-            .delete(`https://mvn-task-manager.work/api/tasks/${task.id}`)
-            .then((res) => {
-                dispatch(deleteTask(task));
-            });
+        axiosInstance.delete(`api/tasks/${task.id}`).then((res) => {
+            console.log(res);
+            dispatch(deleteTask(task));
+        });
         setTaskVisible(false);
     };
 
@@ -70,13 +69,13 @@ const DisplayTask = ({
             setMsg("Can't update Task, please enter the title & category");
         } else {
             axiosInstance
-                .patch(`https://mvn-task-manager.work/api/tasks/${task.id}`, {
+                .patch(`api/tasks/${task.id}`, {
                     title: title,
                     categoryIds: selectedCate,
                     status: "IN_PROGRESS",
                 })
                 .then((res) => {
-                    dispatch(updateTask(res));
+                    dispatch(updateTask(res.data));
                 });
             setTaskVisible(false);
             clearState();
@@ -143,7 +142,7 @@ const DisplayTask = ({
                                 >
                                     {category.map((item) => (
                                         <Select.Option
-                                            key={item.name}
+                                            key={item.id}
                                             value={item.id}
                                         >
                                             {item.name}
@@ -158,7 +157,10 @@ const DisplayTask = ({
                             <h4>
                                 Categories:{" "}
                                 {task.categories.map((item: any) => (
-                                    <span className={style.category}>
+                                    <span
+                                        key={item.id}
+                                        className={style.category}
+                                    >
                                         {item.name}
                                     </span>
                                 ))}

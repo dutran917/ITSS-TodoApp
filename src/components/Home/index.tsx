@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { logout } from "../../actions/auth";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/authSlice";
 import Header from "../Header";
 import ListTask from "../ListTask/index";
 import CreateTask from "../Modal/CreateTask";

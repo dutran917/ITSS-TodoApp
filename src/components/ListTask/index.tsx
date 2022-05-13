@@ -1,11 +1,12 @@
 import { Spin } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Task from "../Task/index";
 import InfiniteScroll, { Props } from "react-infinite-scroll-component";
 import DisplayTask from "../Modal/DisplayTask";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import axiosInstance from "../../interceptors/axiosInstance";
 import style from "./index.module.css";
+import { RootState } from "../../redux";
 
 interface ListTaskProps {
     search: string;
@@ -13,12 +14,15 @@ interface ListTaskProps {
     page: number;
 }
 
-const ListTask = ({ search, page, setPage }: ListTaskProps) => {
+const ListTask: FC<ListTaskProps> = ({ search, page, setPage }) => {
     const [taskVisible, setTaskVisible] = useState<boolean>(false);
     const [selectedTask, setSelectedTask] = useState<any>(null);
     const [listTask, setListTask] = useState<any[]>([]);
-    const newTask = useSelector((state: RootStateOrAny) => state.task);
+    const newTask = useSelector((state: RootState) => state.task);
 
+    useEffect(() => {
+        console.log(newTask);
+    }, [newTask]);
     const removeTask = (task: any, listTask: any[]) => {
         for (let i = 0; i < listTask.length; i++) {
             if (listTask[i].id === task.id) {
@@ -62,12 +66,12 @@ const ListTask = ({ search, page, setPage }: ListTaskProps) => {
     useEffect(() => {
         if (newTask) {
             if (newTask.type === "add") {
-                setListTask([newTask, ...listTask]);
+                setListTask([newTask.task, ...listTask]);
             } else if (newTask.type === "delete") {
-                const newList = removeTask(newTask, listTask);
+                const newList = removeTask(newTask.task, listTask);
                 setListTask([...newList]);
             } else {
-                const newList = updateTask(newTask, listTask);
+                const newList = updateTask(newTask.task, listTask);
                 setListTask([...newList]);
             }
         }

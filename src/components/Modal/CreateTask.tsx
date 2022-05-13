@@ -1,7 +1,7 @@
 import { Alert, Form, Input, Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addNewTask } from "../../actions/task";
+import { addNewTask } from "../../redux/taskSlice";
 import axiosInstance from "../../interceptors/axiosInstance";
 
 interface CreateTaskProps {
@@ -46,7 +46,8 @@ const CreateTask = ({ visible, setVisible }: CreateTaskProps) => {
                     categoryIds: selectedCate,
                 })
                 .then((res) => {
-                    dispatch(addNewTask(res));
+                    console.log(res.data);
+                    dispatch(addNewTask(res.data));
                 });
             setVisible(false);
             clearState();
@@ -86,7 +87,7 @@ const CreateTask = ({ visible, setVisible }: CreateTaskProps) => {
                         onChange={handleChangeCate}
                     >
                         {category.map((item) => (
-                            <Select.Option key={item.name} value={item.id}>
+                            <Select.Option key={item.id} value={item.id}>
                                 {item.name}
                             </Select.Option>
                         ))}

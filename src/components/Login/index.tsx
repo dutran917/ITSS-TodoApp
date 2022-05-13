@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { login } from "../../actions/auth";
-import { setNewUser } from "../../actions/user";
+import { login } from "../../redux/authSlice";
+import { setUser } from "../../redux/userSlice";
 import axiosInstance from "../../interceptors/axiosInstance";
 import style from "./index.module.css";
 const { Title } = Typography;
@@ -29,7 +29,7 @@ const Login = ({ option }: LoginProps) => {
             })
             .then((res) => {
                 const user = res.data;
-                dispatch(setNewUser(user));
+                dispatch(setUser(user));
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("uid", res.data.id);
                 dispatch(login(true));

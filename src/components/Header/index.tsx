@@ -1,19 +1,18 @@
 import { LogoutOutlined } from "@ant-design/icons";
 import style from "./index.module.css";
-import { useEffect, useMemo, useState } from "react";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import axiosInstance from "../../interceptors/axiosInstance";
+import { RootState } from "../../redux";
 interface HeaderProps {
     handleLogout: () => void;
 }
 const Header = ({ handleLogout }: HeaderProps) => {
-    const userLogin = useSelector((state: RootStateOrAny) => state.user);
+    const userLogin = useSelector((state: RootState) => state.user);
     const [user, setUser] = useState<any>(null);
-    const uid = useMemo(() => {
-        return localStorage.getItem("uid");
-    }, [userLogin]);
 
     useEffect(() => {
+        const uid = localStorage.getItem("uid");
         axiosInstance
             .get(`api/users/${uid}`)
             .then((res) => {
