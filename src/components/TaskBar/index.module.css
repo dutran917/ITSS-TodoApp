@@ -1,0 +1,18 @@
+.createBtn {
+    margin: 20px;
+    border-radius: 20px;
+}
+
+.taskBar {
+    background: #c9d8e7;
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.searchBar {
+    width: 60%;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
